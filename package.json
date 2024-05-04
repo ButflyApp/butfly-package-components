@@ -1,5 +1,5 @@
 {
-  "name": "butfly-package-components",
+  "name": "@butfly/components",
   "module": "lib/index.ts",
   "type": "module",
   "devDependencies": {
