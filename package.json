@@ -2,7 +2,7 @@
   "name": "@butfly/components",
   "description": "To install dependencies:",
   "version": "0.0.1",
-  "main": "lib/index.ts",
+  "main": "index.ts",
   "directories": {
     "lib": "lib"
   },
