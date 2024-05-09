@@ -2,7 +2,7 @@
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
-import { Button } from "./Button";
+import { Button } from "@/components/Button";
 import {
   Command,
   CommandEmpty,
@@ -10,18 +10,19 @@ import {
   CommandInput,
   CommandItem,
   MaskedCommandInput,
-} from "./Command";
-import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
-import { cn } from "../utils/cn";
-import { getObjectItem } from "../utils/getObjectItem";
+} from "@/components/Command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import { cn } from "@/utils/cn";
+import { getObjectItem } from "@/utils/getObjectItem";
 import { useMemo, useState } from "react";
 import { patternFormatter } from "react-number-format";
+import { Label } from "@/components/Label";
 
 interface AutocompleteProps {
-  title?: string;
   className?: string;
   buttonClassName?: string;
   required?: boolean;
+  label?: string;
   labelValue: string;
   mask?: string;
   value?: { [field: string]: any };
@@ -47,10 +48,10 @@ interface AutocompleteProps {
 }
 
 export function Autocomplete({
-  title,
   options = [],
   mask = "",
   onValueChange,
+  label,
   labelValue,
   defaultOption,
   required,
@@ -80,11 +81,11 @@ export function Autocomplete({
   }
 
   return (
-    <div className={cn(className)}>
-      <label className="ml-3 text-sm font-medium text-gray-500">
-        {title}
+    <div className={cn("flex flex-col", className)}>
+      <Label className="ml-3">
+        {label}
         {required ? "*" : ""}
-      </label>
+      </Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

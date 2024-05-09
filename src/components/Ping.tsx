@@ -1,4 +1,4 @@
-import { cn } from "../utils/cn";
+import { cn } from "@/utils/cn";
 
 const colorClasses = {
   success: "bg-green-500",
