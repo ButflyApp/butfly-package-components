@@ -1,9 +1,18 @@
 'use client';
+function __insertCSS(code) {
+  if (!code || typeof document == 'undefined') return
+  let head = document.head || document.getElementsByTagName('head')[0]
+  let style = document.createElement('style')
+  style.type = 'text/css'
+  head.appendChild(style)
+  ;style.styleSheet ? (style.styleSheet.cssText = code) : style.appendChild(document.createTextNode(code))
+}
+
 import { jsx, jsxs } from 'react/jsx-runtime';
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import { c as cn } from './Autocomplete-client-YWxfZj5j.js';
+import { c as cn } from './Autocomplete-client-BfB2klvb.js';
 
 const Dialog = DialogPrimitive.Root;
 const DialogPortal = DialogPrimitive.Portal;

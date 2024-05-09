@@ -1,4 +1,13 @@
 'use client';
+function __insertCSS(code) {
+  if (!code || typeof document == 'undefined') return
+  let head = document.head || document.getElementsByTagName('head')[0]
+  let style = document.createElement('style')
+  style.type = 'text/css'
+  head.appendChild(style)
+  ;style.styleSheet ? (style.styleSheet.cssText = code) : style.appendChild(document.createTextNode(code))
+}
+
 import { jsxs, jsx } from 'react/jsx-runtime';
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 import { clsx } from 'clsx';
@@ -7,8 +16,8 @@ import * as React from 'react';
 import { forwardRef, Children, isValidElement, createElement, cloneElement, Fragment, useState, useMemo } from 'react';
 import { cva } from 'class-variance-authority';
 import { Loader2Icon } from 'lucide-react';
-import { C as Command, M as MaskedCommandInput, a as CommandInput, b as CommandGroup, c as CommandEmpty, d as CommandItem } from './Command-client-fFkSfAzQ.js';
-import { P as Popover, a as PopoverTrigger, b as PopoverContent } from './Popover-client-BOeR2yNg.js';
+import { C as Command, M as MaskedCommandInput, a as CommandInput, b as CommandGroup, c as CommandEmpty, d as CommandItem } from './Command-client-DFVXfFa_.js';
+import { P as Popover, a as PopoverTrigger, b as PopoverContent } from './Popover-client-Ds8lttah.js';
 import { patternFormatter } from 'react-number-format';
 
 function cn(...inputs) {

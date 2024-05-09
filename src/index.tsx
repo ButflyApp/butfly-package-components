@@ -1,4 +1,4 @@
-//import "./index.css";
+import './output.css'
 import { Alert } from "./components/Alert";
 import { Autocomplete } from "./components/Autocomplete";
 import { Button } from "./components/Button";
