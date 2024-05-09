@@ -80,7 +80,7 @@ export function Autocomplete({
   }
 
   return (
-    <div className={cn("flex flex-1 flex-col", className)}>
+    <div className={cn(className)}>
       <label className="ml-3 text-sm font-medium text-gray-500">
         {title}
         {required ? "*" : ""}
