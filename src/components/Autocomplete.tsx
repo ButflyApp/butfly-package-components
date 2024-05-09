@@ -19,6 +19,8 @@ import { patternFormatter } from "react-number-format";
 
 interface AutocompleteProps {
   title?: string;
+  className?: string;
+  buttonClassName?: string;
   required?: boolean;
   labelValue: string;
   mask?: string;
@@ -54,6 +56,8 @@ export function Autocomplete({
   required,
   searchText = "Pesquise as opções",
   actions,
+  className,
+  buttonClassName
 }: AutocompleteProps) {
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<{
@@ -76,7 +80,7 @@ export function Autocomplete({
   }
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className={cn("flex flex-1 flex-col", className)}>
       <label className="ml-3 text-sm font-medium text-gray-500">
         {title}
         {required ? "*" : ""}
@@ -87,7 +91,7 @@ export function Autocomplete({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="justify-between"
+            className={cn("justify-between", buttonClassName)}
           >
             {selectedOption
               ? maskValue(selectedValue)
