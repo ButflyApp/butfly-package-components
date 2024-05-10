@@ -14,7 +14,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/utils/cn";
 import { getObjectItem } from "@/utils/getObjectItem";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { patternFormatter } from "react-number-format";
 
 interface AutocompleteProps {
@@ -26,6 +26,7 @@ interface AutocompleteProps {
   options: { [field: string]: any }[];
   defaultOption?: { [field: string]: any };
   onValueChange?: (value: { [field: string]: any }) => void;
+  onTypedValueChange?: (value: string) => void;
   searchText?: string;
   actions?: {
     CreationComponent: ({
@@ -48,6 +49,7 @@ export function Autocomplete({
   options = [],
   mask = "",
   onValueChange,
+  onTypedValueChange,
   labelValue,
   defaultOption,
   searchText = "Pesquise as opções",
@@ -61,6 +63,10 @@ export function Autocomplete({
   } | null>(defaultOption || null);
   const [typedValue, setTypedValue] = useState("");
   const [maskedValue, setMaskedValue] = useState("");
+
+  useEffect(() => {
+    if (onTypedValueChange) onTypedValueChange(typedValue);
+  }, [typedValue]);
 
   const selectedValue = useMemo(
     () => getObjectItem(selectedOption, labelValue),
