@@ -1,9 +1,9 @@
 import { Input, InputProps } from "@/components/Input";
-import { Label } from "@/components/Label";
 import { NumberFormatBase, NumericFormatProps } from "react-number-format";
 
 interface CurrencyInputProps extends NumericFormatProps {
   onInputChange?: (value: string) => void;
+  label?: string;
 }
 export function CurrencyInput({
   onChange,
@@ -40,18 +40,14 @@ export function CurrencyInput({
   };
 
   return (
-    <div>
-      <Label className="ml-3">
-        {label}
-        {required ? "*" : ""}
-      </Label>
+    <>
       <NumberFormatBase
-        customInput={Input}
+        customInput={({ ...props }) => <Input label={label} {...props} />}
         {...props}
         onChange={onValueChange}
         format={formatCurrencyByEnd}
         maxLength={21}
       />
-    </div>
+    </>
   );
 }

@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { cn } from "@/utils/cn";
-import { Label } from "@/components/Label";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -13,11 +12,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, required, label, type, error, errorHelper, ...props }) => {
     return (
-      <div>
-        <Label className="ml-3">
-          {label}
-          {required ? "*" : ""}
-        </Label>
+      <>
         <input
           type={type}
           className={cn(
@@ -31,7 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {error && errorHelper && (
           <p className="ml-3 mt-1 text-xs text-red-700">{errorHelper}</p>
         )}
-      </div>
+      </>
     );
   }
 );

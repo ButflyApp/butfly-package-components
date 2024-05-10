@@ -16,13 +16,10 @@ import { cn } from "@/utils/cn";
 import { getObjectItem } from "@/utils/getObjectItem";
 import { useMemo, useState } from "react";
 import { patternFormatter } from "react-number-format";
-import { Label } from "@/components/Label";
 
 interface AutocompleteProps {
   className?: string;
   buttonClassName?: string;
-  required?: boolean;
-  label?: string;
   labelValue: string;
   mask?: string;
   value?: { [field: string]: any };
@@ -51,14 +48,12 @@ export function Autocomplete({
   options = [],
   mask = "",
   onValueChange,
-  label,
   labelValue,
   defaultOption,
-  required,
   searchText = "Pesquise as opções",
   actions,
   className,
-  buttonClassName
+  buttonClassName,
 }: AutocompleteProps) {
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<{
@@ -67,7 +62,10 @@ export function Autocomplete({
   const [typedValue, setTypedValue] = useState("");
   const [maskedValue, setMaskedValue] = useState("");
 
-  const selectedValue = useMemo(() => getObjectItem(selectedOption, labelValue), [selectedOption]);
+  const selectedValue = useMemo(
+    () => getObjectItem(selectedOption, labelValue),
+    [selectedOption]
+  );
 
   function maskValue(value: string) {
     if (!value) return "";
@@ -82,10 +80,6 @@ export function Autocomplete({
 
   return (
     <div className={cn("flex flex-col", className)}>
-      <Label className="ml-3">
-        {label}
-        {required ? "*" : ""}
-      </Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

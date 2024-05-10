@@ -5,6 +5,7 @@ import { Button } from "@/components/Button";
 import { CurrencyInput } from "@/components/CurrencyInput";
 import { Input } from "@/components/Input";
 import { Ping } from "@/components/Ping";
+import { Label } from "@/components/Label";
 
 
 export {
@@ -13,5 +14,6 @@ export {
   Button,
   CurrencyInput,
   Input,
-  Ping
+  Ping,
+  Label
 };
