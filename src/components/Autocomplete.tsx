@@ -16,6 +16,8 @@ import { cn } from "@/utils/cn";
 import { getObjectItem } from "@/utils/getObjectItem";
 import { useEffect, useMemo, useState } from "react";
 import { patternFormatter } from "react-number-format";
+import { removeSpecials } from "@/utils/removeSpecials";
+import _ from "lodash";
 
 interface AutocompleteProps {
   className?: string;
@@ -51,6 +53,7 @@ export function Autocomplete({
   onValueChange,
   onTypedValueChange,
   labelValue,
+  value,
   defaultOption,
   searchText = "Pesquise as opções",
   actions,
@@ -103,7 +106,12 @@ export function Autocomplete({
         <PopoverContent className="popover-content-width-same-as-its-trigger p-0">
           <Command
             filter={(fieldValue: string) => {
-              if (fieldValue.includes(typedValue)) return 1;
+              if (
+                removeSpecials(fieldValue)
+                  .toLowerCase()
+                  .includes(removeSpecials(typedValue).toLowerCase())
+              )
+                return 1;
               return 0;
             }}
           >
@@ -133,13 +141,23 @@ export function Autocomplete({
                   return (
                     <CommandItem
                       key={key}
-                      value={JSON.stringify(option)}
+                      value={
+                        value ? JSON.stringify(value) : JSON.stringify(option)
+                      }
                       disabled={false}
                       onSelect={(currentValue) => {
-                        setSelectedOption(JSON.parse(currentValue));
-                        setOpen(false);
-                        onValueChange &&
-                          onValueChange(JSON.parse(currentValue));
+                        options.forEach((opt: any) => {
+                          const optionObject = JSON.parse(
+                            _.toLower(JSON.stringify(opt))
+                          );
+                          const currentObject = JSON.parse(currentValue);
+                          if (_.isEqual(optionObject, currentObject)) {
+                            setSelectedOption(opt);
+                            setOpen(false);
+                            onValueChange && onValueChange(opt);
+                            return;
+                          }
+                        });
                       }}
                     >
                       {maskValue(label)}
