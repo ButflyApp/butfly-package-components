@@ -4,12 +4,14 @@ import { NumberFormatBase, NumericFormatProps } from "react-number-format";
 interface CurrencyInputProps extends NumericFormatProps {
   onInputChange?: (value: string) => void;
   label?: string;
+  value?: number;
 }
 export function CurrencyInput({
   onChange,
   onInputChange,
   label,
   required,
+  value,
   ...props
 }: InputProps & CurrencyInputProps) {
   const formatCurrencyByEnd = (value: string): string => {
@@ -35,6 +37,7 @@ export function CurrencyInput({
   };
 
   const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (value) return;
     if (onChange) onChange(event);
     if (onInputChange) onInputChange(revertFormat(event.target.value));
   };
@@ -42,8 +45,18 @@ export function CurrencyInput({
   return (
     <>
       <NumberFormatBase
-        customInput={({ ...props }) => <Input label={label} {...props} />}
+        customInput={({ ...props }) => (
+          <Input
+            label={label}
+            {...props}
+            onChange={(event) => {
+              if (value) return;
+              props?.onChange && props?.onChange(event)
+            }}
+          />
+        )}
         {...props}
+        value={value ? Number(value).toFixed(2).replace(".", "") : null}
         onChange={onValueChange}
         format={formatCurrencyByEnd}
         maxLength={21}

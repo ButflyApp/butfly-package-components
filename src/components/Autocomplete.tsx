@@ -11,13 +11,17 @@ import {
   CommandItem,
   MaskedCommandInput,
 } from "@/components/Command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/Popover";
 import { cn } from "@/utils/cn";
 import { getObjectItem } from "@/utils/getObjectItem";
 import { useEffect, useMemo, useState } from "react";
 import { patternFormatter } from "react-number-format";
 import { removeSpecials } from "@/utils/removeSpecials";
-import _ from "lodash";
+import { isEqual } from "@/utils/isEqual";
 
 interface AutocompleteProps {
   className?: string;
@@ -141,21 +145,16 @@ export function Autocomplete({
                   return (
                     <CommandItem
                       key={key}
-                      value={
-                        value ? JSON.stringify(value) : JSON.stringify(option)
-                      }
+                      value={value ? JSON.stringify(value) : JSON.stringify(option)}
                       disabled={false}
                       onSelect={(currentValue) => {
                         options.forEach((opt: any) => {
-                          const optionObject = JSON.parse(
-                            _.toLower(JSON.stringify(opt))
-                          );
+                          const optionObject = JSON.parse(JSON.stringify(opt).toLowerCase());
                           const currentObject = JSON.parse(currentValue);
-                          if (_.isEqual(optionObject, currentObject)) {
+                          if (isEqual(optionObject, currentObject)) {
                             setSelectedOption(opt);
                             setOpen(false);
                             onValueChange && onValueChange(opt);
-                            return;
                           }
                         });
                       }}

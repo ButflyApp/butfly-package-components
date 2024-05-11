@@ -1,4 +1,6 @@
 import { Autocomplete } from "@/components/Autocomplete";
+import { CurrencyInput } from "@/components/CurrencyInput";
+import { Input } from "@/components/Input";
 
 export function Development() {
   return (
@@ -39,6 +41,10 @@ export function Development() {
           },
         ]}
       />
+
+      <CurrencyInput  value={29.91}/>
+
+      <Input/>
     </div>
   );
 }
