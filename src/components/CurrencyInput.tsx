@@ -2,28 +2,42 @@ import { Input, InputProps } from "@/components/Input";
 import { NumberFormatBase, NumericFormatProps } from "react-number-format";
 
 interface CurrencyInputProps extends NumericFormatProps {
-  onInputChange?: (value: string) => void;
-  label?: string;
-  value?: number;
+  onValueChange?: ({
+    floatValue,
+    value,
+    formattedValue,
+  }: {
+    floatValue: number;
+    value: string;
+    formattedValue: string;
+  }) => void;
+  value?: string | number;
 }
 export function CurrencyInput({
   onChange,
-  onInputChange,
-  label,
+  onValueChange,
   required,
-  value,
+  value: valueProp,
   ...props
 }: InputProps & CurrencyInputProps) {
-  const formatCurrencyByEnd = (value: string): string => {
-    if (!Number(value)) return "";
+  const formatCurrencyByEnd = (value?: string): string => {
+    if (!value || !Number(value)) return "";
 
-    const amount = new Intl.NumberFormat("pt-BR", {
+    let finalValue
+    finalValue = new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
       minimumFractionDigits: 2,
-    }).format(parseFloat(value) / 100);
+    }).format(parseFloat(value.replace(".", "")) / 100);
 
-    return `${amount}`;
+    if(valueProp){
+      finalValue = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+        minimumFractionDigits: 2,
+      }).format(parseFloat(valueProp as string));
+    }
+    return `${finalValue}`;
   };
 
   const revertFormat = (value: string): string => {
@@ -36,28 +50,35 @@ export function CurrencyInput({
     ).toString();
   };
 
-  const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (value) return;
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) onChange(event);
-    if (onInputChange) onInputChange(revertFormat(event.target.value));
+
+    if (valueProp) {
+      onValueChange &&
+        onValueChange({
+          floatValue: Number(revertFormat(event.target.value)),
+          value: revertFormat(event.target.value),
+          formattedValue: event.target.value,
+        });
+    }
   };
 
   return (
     <>
       <NumberFormatBase
-        customInput={({ ...props }) => (
-          <Input
-            label={label}
-            {...props}
-            onChange={(event) => {
-              if (value) return;
-              props?.onChange && props?.onChange(event)
-            }}
-          />
-        )}
         {...props}
-        value={value ? Number(value).toFixed(2).replace(".", "") : null}
-        onChange={onValueChange}
+        customInput={Input}
+        onChange={onInputChange}
+        value={valueProp}
+        onValueChange={({ formattedValue }) => {
+          console.log('ValueCHange')
+          onValueChange &&
+            onValueChange({
+              floatValue: Number(revertFormat(formattedValue)),
+              value: revertFormat(formattedValue),
+              formattedValue,
+            });
+        }}
         format={formatCurrencyByEnd}
         maxLength={21}
       />
