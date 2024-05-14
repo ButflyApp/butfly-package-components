@@ -6,17 +6,16 @@ export function Development() {
   return (
     <div>
       <Formik initialValues={{ amount: 11.5 }} onSubmit={console.log}>
-        {({ setFieldValue, handleSubmit, values }) => (
+        {({ setFieldValue, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <CurrencyInput
               name="amount"
-              value={values.amount}
               onValueChange={(data) => {
-                console.log(data)
                 setFieldValue("amount", data.floatValue);
               }}
             />
             <Button type="submit">Submit</Button>
+            <Button type="button" onClick={() => setFieldValue("amount", 10)}>Reset</Button>
           </form>
         )}
       </Formik>
