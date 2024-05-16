@@ -31,13 +31,13 @@ interface AutocompleteProps {
       typedValue,
       maskedValue,
       setOpen,
-      setSelectedOption,
+      setCurrentOption,
       resetAutocomplete
     }: {
       typedValue: string
       maskedValue: string
       setOpen: (value: boolean) => void
-      setSelectedOption: (value: any) => void
+      setCurrentOption: (value: any) => void
       resetAutocomplete: VoidFunction
     }) => React.ReactElement
   }
@@ -59,8 +59,7 @@ export function Autocomplete({
   options = useMemo(() => options.map(option => ({ ...option, [autocompleteFieldUid]: v4() })), [])
 
   const [open, setOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState<{ [field: string]: any } | null>(defaultOption || null)
-  const [currentOption, setCurrentOption] = useState<{ [field: string]: any } | null | undefined>(null)
+  const [currentOption, setCurrentOption] = useState<{ [field: string]: any } | null | undefined>(defaultOption || null)
   const [typedValue, setTypedValue] = useState('')
   const [maskedValue, setMaskedValue] = useState('')
 
@@ -68,9 +67,7 @@ export function Autocomplete({
     if (onTypedValueChange) onTypedValueChange(typedValue)
   }, [typedValue])
 
-  const selectedValue = useMemo(() => getObjectItem(selectedOption, labelValue), [selectedOption])
-
-  console.log({currentOption, selectedOption})
+  const selectedValue = useMemo(() => getObjectItem(currentOption, labelValue), [currentOption, currentOption])
 
   useEffect(() => {
     if (value) {
@@ -80,12 +77,11 @@ export function Autocomplete({
 
         return equal
       })
-      setCurrentOption(option)
-      setSelectedOption(option || null)
+      setCurrentOption(option || null)
     } else {
-      setCurrentOption(selectedOption)
+      setCurrentOption(currentOption)
     }
-  }, [selectedOption, value])
+  }, [currentOption, value])
 
   function maskValue(value: string) {
     if (!value) return ''
@@ -103,7 +99,7 @@ export function Autocomplete({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" role="combobox" aria-expanded={open} className={cn('justify-between', buttonClassName)}>
-            {selectedOption ? maskValue(selectedValue) : 'Selecione uma opção...'}
+            {currentOption ? maskValue(selectedValue) : 'Selecione uma opção...'}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -139,10 +135,10 @@ export function Autocomplete({
                       value={option[autocompleteFieldUid]}
                       disabled={false}
                       onSelect={() => {
-                        setSelectedOption(option)
+                        const { [autocompleteFieldUid]: field, ...optionRest } = option
+                        onValueChange && onValueChange(optionRest)
                         setCurrentOption(option)
                         setOpen(false)
-                        onValueChange && onValueChange(option)
                       }}
                     >
                       {maskValue(label)}
@@ -163,7 +159,7 @@ export function Autocomplete({
                   typedValue,
                   maskedValue,
                   setOpen,
-                  setSelectedOption,
+                  setCurrentOption,
                   resetAutocomplete
                 })}
               </div>
