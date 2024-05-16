@@ -6,7 +6,8 @@ import { CurrencyInput } from "@/components/CurrencyInput";
 import { Input } from "@/components/Input";
 import { Ping } from "@/components/Ping";
 import { Label } from "@/components/Label";
-
+import { RadioGroup, RadioGroupItem } from "@/components/RadioGroup";
+import { Checkbox } from '@/components/Checkbox';
 
 export {
   Alert,
@@ -15,5 +16,8 @@ export {
   CurrencyInput,
   Input,
   Ping,
-  Label
+  Label,
+  RadioGroup,
+  RadioGroupItem,
+  Checkbox
 };

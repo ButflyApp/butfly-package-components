@@ -1,187 +1,170 @@
-"use client";
+'use client'
 
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 
-import { Button } from "@/components/Button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  MaskedCommandInput,
-} from "@/components/Command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/Popover";
-import { cn } from "@/utils/cn";
-import { getObjectItem } from "@/utils/getObjectItem";
-import { useEffect, useMemo, useState } from "react";
-import { patternFormatter } from "react-number-format";
-import { removeSpecials } from "@/utils/removeSpecials";
-import { isEqual } from "@/utils/isEqual";
+import { Button } from '@/components/Button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, MaskedCommandInput } from '@/components/Command'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/Popover'
+import { cn } from '@/utils/cn'
+import { getObjectItem } from '@/utils/getObjectItem'
+import { useEffect, useMemo, useState } from 'react'
+import { patternFormatter } from 'react-number-format'
+import { removeSpecials } from '@/utils/removeSpecials'
+import { v4 } from 'uuid'
+import { isEqual } from '@/utils/isEqual'
+
+const autocompleteFieldUid = v4()
 
 interface AutocompleteProps {
-  className?: string;
-  buttonClassName?: string;
-  labelValue: string;
-  mask?: string;
-  value?: { [field: string]: any };
-  options: { [field: string]: any }[];
-  defaultOption?: { [field: string]: any };
-  onValueChange?: (value: { [field: string]: any }) => void;
-  onTypedValueChange?: (value: string) => void;
-  searchText?: string;
+  labelValue: string
+  options: { [field: string]: any }[]
+  className?: string
+  buttonClassName?: string
+  mask?: string
+  value?: { [field: string]: any }
+  defaultOption?: { [field: string]: any }
+  onValueChange?: (value: { [field: string]: any }) => void
+  onTypedValueChange?: (value: string) => void
+  searchText?: string
   actions?: {
     CreationComponent: ({
       typedValue,
       maskedValue,
       setOpen,
       setSelectedOption,
-      resetAutocomplete,
+      resetAutocomplete
     }: {
-      typedValue: string;
-      maskedValue: string;
-      setOpen: (value: boolean) => void;
-      setSelectedOption: (value: any) => void;
-      resetAutocomplete: VoidFunction;
-    }) => React.ReactElement;
-  };
+      typedValue: string
+      maskedValue: string
+      setOpen: (value: boolean) => void
+      setSelectedOption: (value: any) => void
+      resetAutocomplete: VoidFunction
+    }) => React.ReactElement
+  }
 }
 
 export function Autocomplete({
   options = [],
-  mask = "",
+  mask = '',
   onValueChange,
   onTypedValueChange,
   labelValue,
   value,
   defaultOption,
-  searchText = "Pesquise as opções",
+  searchText = 'Pesquise as opções',
   actions,
   className,
-  buttonClassName,
+  buttonClassName
 }: AutocompleteProps) {
-  const [open, setOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<{
-    [field: string]: any;
-  } | null>(defaultOption || null);
-  const [typedValue, setTypedValue] = useState("");
-  const [maskedValue, setMaskedValue] = useState("");
+  options = useMemo(() => options.map(option => ({ ...option, [autocompleteFieldUid]: v4() })), [])
+
+  const [open, setOpen] = useState(false)
+  const [selectedOption, setSelectedOption] = useState<{ [field: string]: any } | null>(defaultOption || null)
+  const [currentOption, setCurrentOption] = useState<{ [field: string]: any } | null | undefined>(null)
+  const [typedValue, setTypedValue] = useState('')
+  const [maskedValue, setMaskedValue] = useState('')
 
   useEffect(() => {
-    if (onTypedValueChange) onTypedValueChange(typedValue);
-  }, [typedValue]);
+    if (onTypedValueChange) onTypedValueChange(typedValue)
+  }, [typedValue])
 
-  const selectedValue = useMemo(
-    () => getObjectItem(selectedOption, labelValue),
-    [selectedOption]
-  );
+  const selectedValue = useMemo(() => getObjectItem(selectedOption, labelValue), [selectedOption])
+
+  console.log({currentOption, selectedOption})
+
+  useEffect(() => {
+    if (value) {
+      const option = options.find(option => {
+        const { [autocompleteFieldUid]: field, ...optionRest } = option
+        const equal = isEqual(value, optionRest)
+
+        return equal
+      })
+      setCurrentOption(option)
+      setSelectedOption(option || null)
+    } else {
+      setCurrentOption(selectedOption)
+    }
+  }, [selectedOption, value])
 
   function maskValue(value: string) {
-    if (!value) return "";
-    return mask ? patternFormatter(value, { format: mask }) : value;
+    if (!value) return ''
+    return mask ? patternFormatter(value, { format: mask }) : value
   }
 
   function resetAutocomplete() {
-    setTypedValue("");
-    setMaskedValue("");
-    setOpen(false);
+    setTypedValue('')
+    setMaskedValue('')
+    setOpen(false)
   }
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div className={cn('flex flex-col', className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className={cn("justify-between", buttonClassName)}
-          >
-            {selectedOption
-              ? maskValue(selectedValue)
-              : "Selecione uma opção..."}
+          <Button variant="outline" role="combobox" aria-expanded={open} className={cn('justify-between', buttonClassName)}>
+            {selectedOption ? maskValue(selectedValue) : 'Selecione uma opção...'}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="popover-content-width-same-as-its-trigger p-0">
           <Command
             filter={(fieldValue: string) => {
-              if (
-                removeSpecials(fieldValue)
-                  .toLowerCase()
-                  .includes(removeSpecials(typedValue).toLowerCase())
-              )
-                return 1;
-              return 0;
+              if (removeSpecials(fieldValue).toLowerCase().includes(removeSpecials(typedValue).toLowerCase())) return 1
+              return 0
             }}
           >
             {mask ? (
               <MaskedCommandInput
                 format={mask}
                 onValueChange={({ value, formattedValue }) => {
-                  setTypedValue(value);
-                  setMaskedValue(formattedValue);
+                  setTypedValue(value)
+                  setMaskedValue(formattedValue)
                 }}
               />
             ) : null}
-            <div className={cn(mask ? "hidden" : "block")}>
-              <CommandInput
-                placeholder={searchText}
-                value={typedValue}
-                onValueChange={setTypedValue}
-              />
+            <div className={cn(mask ? 'hidden' : 'block')}>
+              <CommandInput placeholder={searchText} value={typedValue} onValueChange={setTypedValue} />
             </div>
-            <CommandGroup className="p-1 gap-1">
+            <CommandGroup className="p-1 gap-1" value={currentOption ? currentOption[autocompleteFieldUid] : ''}>
               {options?.length === 0 ? (
                 <CommandEmpty>Nenhum registro encontrado</CommandEmpty>
               ) : (
                 options?.map((option, key) => {
-                  const label = getObjectItem(option, labelValue);
+                  const label = getObjectItem(option, labelValue)
 
                   return (
                     <CommandItem
                       key={key}
-                      value={value ? JSON.stringify(value) : JSON.stringify(option)}
+                      value={option[autocompleteFieldUid]}
                       disabled={false}
-                      onSelect={(currentValue) => {
-                        options.forEach((opt: any) => {
-                          const optionObject = JSON.parse(JSON.stringify(opt).toLowerCase());
-                          const currentObject = JSON.parse(currentValue);
-                          if (isEqual(optionObject, currentObject)) {
-                            setSelectedOption(opt);
-                            setOpen(false);
-                            onValueChange && onValueChange(opt);
-                          }
-                        });
+                      onSelect={() => {
+                        setSelectedOption(option)
+                        setCurrentOption(option)
+                        setOpen(false)
+                        onValueChange && onValueChange(option)
                       }}
                     >
                       {maskValue(label)}
                       <CheckIcon
                         className={cn(
-                          "ml-auto h-4 w-4",
-                          JSON.stringify(option) ===
-                            JSON.stringify(selectedOption)
-                            ? "opacity-100"
-                            : "opacity-0"
+                          'ml-auto h-4 w-4',
+                          currentOption && currentOption[autocompleteFieldUid] === option[autocompleteFieldUid] ? 'opacity-100' : 'opacity-0'
                         )}
                       />
                     </CommandItem>
-                  );
+                  )
                 })
               )}
             </CommandGroup>
             {actions?.CreationComponent && (
-              <div className={cn("p-1 pt-0")}>
+              <div className={cn('p-1 pt-0')}>
                 {actions.CreationComponent({
                   typedValue,
                   maskedValue,
                   setOpen,
                   setSelectedOption,
-                  resetAutocomplete,
+                  resetAutocomplete
                 })}
               </div>
             )}
@@ -189,5 +172,5 @@ export function Autocomplete({
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }

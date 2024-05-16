@@ -1,6 +1,6 @@
 {
   "name": "@butfly/components",
-  "version": "0.0.47",
+  "version": "0.0.53",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -38,6 +38,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.0",
+    "uuid": "^9.0.1",
     "vaul": "^0.9.1",
     "vite-tsconfig-paths": "^4.3.2"
   },
@@ -45,6 +46,7 @@
     "@types/lodash": "^4.17.1",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
