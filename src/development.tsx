@@ -6,7 +6,7 @@ import { Autocomplete } from './components/Autocomplete'
 export function Development() {
   return (
     <div>
-      <Formik initialValues={{ amount: 11.5, option: { uid: '3', name: 'Feijão' } }} onSubmit={console.log}>
+      <Formik initialValues={{ amount: 11.5, option: null }} onSubmit={console.log}>
         {({ setFieldValue, handleSubmit, values, resetForm }) => (
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2 p-4">

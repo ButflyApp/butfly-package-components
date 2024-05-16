@@ -21,7 +21,7 @@ interface AutocompleteProps {
   className?: string
   buttonClassName?: string
   mask?: string
-  value?: { [field: string]: any }
+  value?: { [field: string]: any } | null
   defaultOption?: { [field: string]: any }
   onValueChange?: (value: { [field: string]: any }) => void
   onTypedValueChange?: (value: string) => void
@@ -78,6 +78,8 @@ export function Autocomplete({
         return equal
       })
       setCurrentOption(option || null)
+    } else if(value !== undefined) {
+      setCurrentOption(value)
     } else {
       setCurrentOption(currentOption)
     }
