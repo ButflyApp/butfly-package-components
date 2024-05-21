@@ -13,11 +13,11 @@ export function CurrencyInput({
   ...props
 }: InputProps & CurrencyInputProps) {
   const [inputValue, setInputValue] = useState<number | undefined>(
-    valueProp ? Number(valueProp) : undefined
+    valueProp !== undefined ? Number(valueProp) : undefined
   );
 
   useEffect(() => {
-    if (valueProp) {
+    if (valueProp !== undefined) {
       setInputValue(Number(valueProp));
     }
   }, [valueProp]);
@@ -47,7 +47,7 @@ export function CurrencyInput({
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) onChange(event);
 
-    if (valueProp) {
+    if (valueProp !== undefined) {
       onValueChange &&
         onValueChange(
           {
