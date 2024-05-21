@@ -12,6 +12,7 @@ import { patternFormatter } from 'react-number-format'
 import { removeSpecials } from '@/utils/removeSpecials'
 import { v4 } from 'uuid'
 import { isEqual } from '@/utils/isEqual'
+import { Loader2Icon } from 'lucide-react'
 
 const autocompleteFieldUid = v4()
 
@@ -26,6 +27,7 @@ interface AutocompleteProps {
   onValueChange?: (value: { [field: string]: any }) => void
   onTypedValueChange?: (value: string) => void
   searchText?: string
+  isLoading?: boolean
   actions?: {
     CreationComponent: ({
       typedValue,
@@ -54,9 +56,10 @@ export function Autocomplete({
   searchText = 'Pesquise as opções',
   actions,
   className,
-  buttonClassName
+  buttonClassName,
+  isLoading
 }: AutocompleteProps) {
-  options = useMemo(() => options.map(option => ({ ...option, [autocompleteFieldUid]: v4() })), [])
+  options = useMemo(() => options.map(option => ({ ...option, [autocompleteFieldUid]: v4() })), [options])
 
   const [open, setOpen] = useState(false)
   const [currentOption, setCurrentOption] = useState<{ [field: string]: any } | null | undefined>(defaultOption || null)
@@ -78,7 +81,7 @@ export function Autocomplete({
         return equal
       })
       setCurrentOption(option || null)
-    } else if(value !== undefined) {
+    } else if (value !== undefined) {
       setCurrentOption(value)
     } else {
       setCurrentOption(currentOption)
@@ -102,13 +105,22 @@ export function Autocomplete({
         <PopoverTrigger asChild>
           <Button variant="outline" role="combobox" aria-expanded={open} className={cn('justify-between', buttonClassName)}>
             {currentOption ? maskValue(selectedValue) : 'Selecione uma opção...'}
-            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            {isLoading ? (
+              <div className="ml-2 h-4 w-4 shrink-0 opacity-50">
+                <Loader2Icon className="mr-2 h-5 w-5 animate-spin" />
+              </div>
+            ) : (
+              <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="popover-content-width-same-as-its-trigger p-0">
           <Command
             filter={(fieldValue: string) => {
-              if (removeSpecials(fieldValue).toLowerCase().includes(removeSpecials(typedValue).toLowerCase())) return 1
+              const optionsFiltered = options.find(option => {
+                return option[autocompleteFieldUid] === fieldValue
+              })
+              if (optionsFiltered) return 1
               return 0
             }}
           >
