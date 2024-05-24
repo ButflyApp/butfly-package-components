@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button'
 import { CurrencyInput } from '@/components/CurrencyInput'
 import { Formik } from 'formik'
-import { Autocomplete } from './components/Autocomplete'
+import { Autocomplete } from '@/components/Autocomplete'
 import { useQuery } from 'react-query'
 import { searchGitHubUsers } from './data/searchGitHubUsers'
 import { useMemo, useState, useCallback, useEffect } from 'react'
@@ -36,6 +36,7 @@ export function Development() {
                 labelValue="login"
                 value={values.option}
                 options={users}
+                error={true}
                 onValueChange={value => setFieldValue('option', value)}
                 onTypedValueChange={setGithubSearch}
               />

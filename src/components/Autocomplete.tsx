@@ -20,6 +20,7 @@ interface AutocompleteProps {
   options: { [field: string]: any }[]
   className?: string
   buttonClassName?: string
+  error?: boolean
   mask?: string
   value?: { [field: string]: any } | null
   defaultOption?: { [field: string]: any }
@@ -55,6 +56,7 @@ export function Autocomplete({
   searchText = 'Pesquise as opções',
   actions,
   className,
+  error,
   buttonClassName,
   isLoading
 }: AutocompleteProps) {
@@ -102,7 +104,7 @@ export function Autocomplete({
     <div className={cn('flex flex-col', className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" aria-expanded={open} className={cn('justify-between', buttonClassName)}>
+          <Button variant="outline" role="combobox" aria-expanded={open} className={cn('justify-between', buttonClassName,  error && "border-red-500")}>
             {currentOption ? maskValue(selectedValue) : 'Selecione uma opção...'}
             {isLoading ? (
               <div className="ml-2 h-4 w-4 shrink-0 opacity-50">

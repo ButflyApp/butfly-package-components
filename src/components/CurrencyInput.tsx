@@ -23,7 +23,7 @@ export function CurrencyInput({
   }, [valueProp]);
 
   const formatCurrencyByEnd = (value?: string): string => {
-    if (!Number(value)) return "";
+    if (!Number(value)) return "R$ 0,00";
 
     const amount = new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -35,7 +35,7 @@ export function CurrencyInput({
   };
 
   const revertFormat = (value: string): string => {
-    if (!value) return "";
+    if (!value) return "0";
     return parseFloat(
       value
         .replaceAll(".", "")
