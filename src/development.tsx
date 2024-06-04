@@ -6,6 +6,7 @@ import { useQuery } from 'react-query'
 import { searchGitHubUsers } from './data/searchGitHubUsers'
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import { debounce } from 'lodash'
+import { Input } from '@/components/Input'
 
 export function Development() {
   const [githubSearch, setGithubSearch] = useState('')
@@ -42,6 +43,8 @@ export function Development() {
               />
 
               <CurrencyInput name="amount" value={values.amount} onValueChange={data => setFieldValue('amount', data.floatValue)} />
+
+              <Input  />
 
               <div className="flex gap-2">
                 <Button type="submit">Submit</Button>
