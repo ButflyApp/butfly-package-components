@@ -1,6 +1,6 @@
 {
   "name": "@butfly/components",
-  "version": "0.0.65",
+  "version": "0.0.66",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -13,6 +13,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ButflyApp/butfly-package-components"
   },
   "scripts": {
     "dev": "vite",
