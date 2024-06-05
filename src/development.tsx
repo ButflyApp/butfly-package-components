@@ -1,14 +1,5 @@
-import { Autocomplete } from "@/components/Autocomplete";
-import { Button } from "@/components/Button";
+import { Autocomplete, Button, Label, Select } from ".";
 import { CurrencyInput } from "@/components/CurrencyInput";
-import { Label } from "@/components/Label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/Select";
 import { Switch } from "@/components/Switch";
 import { Field, FieldProps, Formik } from "formik";
 import { debounce } from "lodash";
@@ -94,27 +85,27 @@ export function Development() {
 
                 <Field name="select">
                   {({ field, form }: FieldProps<any>) => (
-                    <Select
+                    <Select.Root
                       value={field.value}
                       onValueChange={(value) =>
                         form.setFieldValue(field.name, value)
                       }
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">
+                      <Select.Trigger>
+                        <Select.Value placeholder="Select a verified email to display" />
+                      </Select.Trigger>
+                      <Select.Content>
+                        <Select.Item value="m@example.com">
                           m@example.com
-                        </SelectItem>
-                        <SelectItem value="m@google.com">
+                        </Select.Item>
+                        <Select.Item value="m@google.com">
                           m@google.com
-                        </SelectItem>
-                        <SelectItem value="m@support.com">
+                        </Select.Item>
+                        <Select.Item value="m@support.com">
                           m@support.com
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                        </Select.Item>
+                      </Select.Content>
+                    </Select.Root>
                   )}
                 </Field>
 

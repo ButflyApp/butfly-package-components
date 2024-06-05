@@ -9,6 +9,18 @@ import { Label } from "@/components/Label";
 import { RadioGroup, RadioGroupItem } from "@/components/RadioGroup";
 import { Checkbox } from '@/components/Checkbox';
 import { Switch } from '@/components/Switch';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/components/Select';
+
+const SelectComponents = {
+    Root: Select,
+    Content: SelectContent,
+    Group: SelectGroup,
+    Item: SelectItem,
+    Label: SelectLabel,
+    Separator: SelectSeparator,
+    Trigger: SelectTrigger,
+    Value: SelectValue,
+  }
 
 export {
   Alert,
@@ -21,5 +33,6 @@ export {
   RadioGroup,
   RadioGroupItem,
   Checkbox,
-  Switch
+  Switch,
+  SelectComponents as Select
 };
