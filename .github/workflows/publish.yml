@@ -13,7 +13,10 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
-      - run: rm -rf src/development.tsx src/main.tsx
+      - run: |
+          rm -rf src/development.tsx \
+                 src/main.tsx \
+                 src/index.css
       - run: npm run build
       - run: npm publish --provenance --access public
         env:

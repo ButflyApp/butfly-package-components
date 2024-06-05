@@ -8,6 +8,7 @@ import { Ping } from "@/components/Ping";
 import { Label } from "@/components/Label";
 import { RadioGroup, RadioGroupItem } from "@/components/RadioGroup";
 import { Checkbox } from '@/components/Checkbox';
+import { Switch } from '@/components/Switch';
 
 export {
   Alert,
@@ -19,5 +20,6 @@ export {
   Label,
   RadioGroup,
   RadioGroupItem,
-  Checkbox
+  Checkbox,
+  Switch
 };
