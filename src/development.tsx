@@ -35,7 +35,7 @@ export function Development() {
   return (
     <div>
       <Formik
-        initialValues={{ amount: 11.5, option: null, isPaid: true }}
+        initialValues={{ amount: 11.5, isPaid: true, option: null }}
         onSubmit={console.log}
       >
         {({ setFieldValue, handleSubmit, values, resetForm }) => {
@@ -46,6 +46,7 @@ export function Development() {
                 <Label>Comida</Label>
                 <Autocomplete
                   isLoading={isLoading}
+                  clearable={true}
                   labelValue="name"
                   value={values.option}
                   options={foods}
