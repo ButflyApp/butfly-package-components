@@ -112,8 +112,8 @@ export function Autocomplete({
     return mask ? patternFormatter(value, { format: mask }) : value;
   }
 
-  function resetAutocomplete(e) {
-    e.preventDefault()
+  function resetAutocomplete(e?: React.SyntheticEvent) {
+    e?.preventDefault()
     setTypedValue("");
     setMaskedValue("");
     setCurrentOption(defaultOption || null);
