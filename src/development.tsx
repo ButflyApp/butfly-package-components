@@ -2,8 +2,15 @@ import { Autocomplete } from "@/components/Autocomplete";
 import { Button } from "@/components/Button";
 import { CurrencyInput } from "@/components/CurrencyInput";
 import { Label } from "@/components/Label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/Select";
 import { Switch } from "@/components/Switch";
-import { Formik } from "formik";
+import { Field, FieldProps, Formik } from "formik";
 import { debounce } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CodeBlock, dracula } from "react-code-blocks";
@@ -35,7 +42,12 @@ export function Development() {
   return (
     <div>
       <Formik
-        initialValues={{ amount: 11.5, isPaid: true, option: null }}
+        initialValues={{
+          amount: 11.5,
+          isPaid: true,
+          option: null,
+          select: "",
+        }}
         onSubmit={console.log}
       >
         {({ setFieldValue, handleSubmit, values, resetForm }) => {
@@ -79,6 +91,32 @@ export function Development() {
                     </Label>
                   </div>
                 </div>
+
+                <Field name="select">
+                  {({ field, form }: FieldProps<any>) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) =>
+                        form.setFieldValue(field.name, value)
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a verified email to display" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="m@example.com">
+                          m@example.com
+                        </SelectItem>
+                        <SelectItem value="m@google.com">
+                          m@google.com
+                        </SelectItem>
+                        <SelectItem value="m@support.com">
+                          m@support.com
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                </Field>
 
                 <div className="flex gap-2">
                   <Button type="submit">Submit</Button>
