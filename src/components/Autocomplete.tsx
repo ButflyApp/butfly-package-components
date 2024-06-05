@@ -18,7 +18,7 @@ import { useEffect, useMemo, useState } from "react";
 import { patternFormatter } from "react-number-format";
 import { v4 } from "uuid";
 import { isEqual } from "@/utils/isEqual";
-import { Loader2Icon, ShieldCloseIcon, XIcon } from "lucide-react";
+import { Loader2Icon, XIcon } from "lucide-react";
 
 const autocompleteFieldUid = v4();
 
