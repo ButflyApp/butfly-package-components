@@ -145,12 +145,12 @@ export function Autocomplete({
             ) : (
               <div className="flex">
                 {clearable && currentOption && (
-                  <button
+                  <div
                     className="ml-2 h-4 w-4 shrink-0 rounded-full z-20"
                     onClick={resetAutocomplete}
                   >
                     <XIcon className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-                  </button>
+                  </div>
                 )}
                 <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </div>
