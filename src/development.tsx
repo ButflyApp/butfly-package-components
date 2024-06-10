@@ -53,7 +53,19 @@ export function Development() {
                   labelValue="name"
                   value={values.option}
                   options={foods}
-                  error={true}
+                  customOption={({ option, label }) => (
+                    <div className="flex items-center gap-2">
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src={option.avatar}
+                        alt={option.name}
+                      />
+                      <div>
+                        <p>{label}</p>
+                        <p className="text-xs italic opacity-60">{option.description}</p>
+                      </div>
+                    </div>
+                  )}
                   onValueChange={(value) => setFieldValue("option", value)}
                   onTypedValueChange={setGithubSearch}
                 />

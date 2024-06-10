@@ -36,6 +36,13 @@ interface AutocompleteProps {
   onTypedValueChange?: (value: string) => void;
   searchText?: string;
   isLoading?: boolean;
+  customOption?: ({
+    option,
+    label
+  }: {
+    option: { [field: string]: any };
+    label: string;
+  }) => React.ReactElement;
   actions?: {
     CreationComponent: ({
       typedValue,
@@ -68,6 +75,7 @@ export function Autocomplete({
   error,
   buttonClassName,
   isLoading,
+  customOption
 }: AutocompleteProps) {
   options = useMemo(
     () =>
@@ -113,13 +121,13 @@ export function Autocomplete({
   }
 
   function resetAutocomplete(e?: React.SyntheticEvent) {
-    e?.preventDefault()
+    e?.preventDefault();
     setTypedValue("");
     setMaskedValue("");
     setCurrentOption(defaultOption || null);
     onValueChange && onValueChange(null!);
   }
-
+  ``;
   return (
     <div className={cn("flex flex-col", className)}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -197,16 +205,17 @@ export function Autocomplete({
                     <CommandItem
                       key={key}
                       value={option[autocompleteFieldUid]}
-                      disabled={false}
+                      disabled={option?.disabled || false}
+                      className={cn(option?.disabled && `opacity-50`)}
                       onSelect={() => {
-                        const { [autocompleteFieldUid]: field, ...optionRest } =
-                          option;
+                        if (option.disabled) return;
+                        const { [autocompleteFieldUid]: field, ...optionRest } = option;
                         onValueChange && onValueChange(optionRest);
                         setCurrentOption(option);
                         setOpen(false);
                       }}
                     >
-                      {maskValue(label)}
+                      {customOption ? customOption({ option, label: maskValue(label) }) : maskValue(label)}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
