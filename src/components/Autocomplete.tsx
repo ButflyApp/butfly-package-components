@@ -1,7 +1,6 @@
 "use client";
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-
 import { Button } from "@/components/Button";
 import {
   Command,
@@ -14,11 +13,13 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/utils/cn";
 import { getObjectItem } from "@/utils/getObjectItem";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { patternFormatter } from "react-number-format";
 import { v4 } from "uuid";
 import { isEqual } from "@/utils/isEqual";
 import { Loader2Icon, XIcon } from "lucide-react";
+import { CommandList } from "cmdk";
+import fuzzy from "fuzzy.js";
 
 const autocompleteFieldUid = v4();
 
@@ -38,7 +39,7 @@ interface AutocompleteProps {
   isLoading?: boolean;
   customOption?: ({
     option,
-    label
+    label,
   }: {
     option: { [field: string]: any };
     label: string;
@@ -75,9 +76,9 @@ export function Autocomplete({
   error,
   buttonClassName,
   isLoading,
-  customOption
+  customOption,
 }: AutocompleteProps) {
-  options = useMemo(
+  const optionsWithIds = useMemo(
     () =>
       options.map((option) => ({ ...option, [autocompleteFieldUid]: v4() })),
     [options]
@@ -92,42 +93,44 @@ export function Autocomplete({
 
   useEffect(() => {
     if (onTypedValueChange) onTypedValueChange(typedValue);
-  }, [typedValue]);
+  }, [typedValue, onTypedValueChange]);
 
   const selectedValue = useMemo(
     () => getObjectItem(currentOption, labelValue),
-    [currentOption, currentOption]
+    [currentOption, labelValue]
   );
 
   useEffect(() => {
     if (value) {
-      const option = options.find((option) => {
+      const option = optionsWithIds.find((option) => {
         const { [autocompleteFieldUid]: field, ...optionRest } = option;
-        const equal = isEqual(value, optionRest);
-
-        return equal;
+        return isEqual(value, optionRest);
       });
       setCurrentOption(option || null);
-    } else if (value !== undefined) {
-      setCurrentOption(value);
     } else {
-      setCurrentOption(currentOption);
+      setCurrentOption(defaultOption || null);
     }
-  }, [currentOption, value]);
+  }, [value, defaultOption, optionsWithIds]);
 
-  function maskValue(value: string) {
-    if (!value) return "";
-    return mask ? patternFormatter(value, { format: mask }) : value;
-  }
+  const maskValue = useCallback(
+    (value: string) => {
+      if (!value) return "";
+      return mask ? patternFormatter(value, { format: mask }) : value;
+    },
+    [mask]
+  );
 
-  function resetAutocomplete(e?: React.SyntheticEvent) {
-    e?.preventDefault();
-    setTypedValue("");
-    setMaskedValue("");
-    setCurrentOption(defaultOption || null);
-    onValueChange && onValueChange(null!);
-  }
-  ``;
+  const resetAutocomplete = useCallback(
+    (e?: React.SyntheticEvent) => {
+      e?.preventDefault();
+      setTypedValue("");
+      setMaskedValue("");
+      setCurrentOption(defaultOption || null);
+      onValueChange && onValueChange(null!);
+    },
+    [defaultOption, onValueChange]
+  );
+
   return (
     <div className={cn("flex flex-col", className)}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -167,15 +170,16 @@ export function Autocomplete({
         </PopoverTrigger>
         <PopoverContent className="popover-content-width-same-as-its-trigger p-0">
           <Command
-            filter={(fieldValue: string) => {
-              const optionsFiltered = options.find((option) => {
-                return option[autocompleteFieldUid] === fieldValue;
+            filter={(_, searchValue: string) => {
+              let score = 0;
+              optionsWithIds.forEach((option) => {
+                score = fuzzy(JSON.stringify(option), searchValue).score;
+                if (score > 0) return;
               });
-              if (optionsFiltered) return 1;
-              return 0;
+              return score
             }}
           >
-            {mask ? (
+            {!!mask && (
               <MaskedCommandInput
                 format={mask}
                 onValueChange={({ value, formattedValue }) => {
@@ -183,24 +187,21 @@ export function Autocomplete({
                   setMaskedValue(formattedValue);
                 }}
               />
-            ) : null}
-            <div className={cn(mask ? "hidden" : "block")}>
-              <CommandInput
-                placeholder={searchText}
-                value={typedValue}
-                onValueChange={setTypedValue}
-              />
-            </div>
-            <CommandGroup
-              className="p-1 gap-1"
-              value={currentOption ? currentOption[autocompleteFieldUid] : ""}
-            >
-              {options?.length === 0 ? (
-                <CommandEmpty>Nenhum registro encontrado</CommandEmpty>
-              ) : (
-                options?.map((option, key) => {
+            )}
+            <CommandInput
+              className={cn(mask ? "hidden" : "block")}
+              placeholder={searchText}
+              value={typedValue}
+              onValueChange={setTypedValue}
+            />
+            <CommandEmpty>Nenhum registro encontrado</CommandEmpty>
+            <CommandList>
+              <CommandGroup
+                className="p-1 gap-1"
+                value={currentOption ? currentOption[autocompleteFieldUid] : ""}
+              >
+                {optionsWithIds.map((option, key) => {
                   const label = getObjectItem(option, labelValue);
-
                   return (
                     <CommandItem
                       key={key}
@@ -209,13 +210,22 @@ export function Autocomplete({
                       className={cn(option?.disabled && `opacity-50`)}
                       onSelect={() => {
                         if (option.disabled) return;
-                        const { [autocompleteFieldUid]: field, ...optionRest } = option;
+                        const { [autocompleteFieldUid]: field, ...optionRest } =
+                          option;
                         onValueChange && onValueChange(optionRest);
                         setCurrentOption(option);
                         setOpen(false);
                       }}
                     >
-                      {customOption ? customOption({ option, label: maskValue(label) }) : maskValue(label)}
+                      <p className="hidden">{maskValue(label)}</p>
+                      <>
+                        {customOption
+                          ? customOption({
+                              option,
+                              label: maskValue(label),
+                            })
+                          : maskValue(label)}
+                      </>
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
@@ -228,9 +238,9 @@ export function Autocomplete({
                       />
                     </CommandItem>
                   );
-                })
-              )}
-            </CommandGroup>
+                })}
+              </CommandGroup>
+            </CommandList>
             {actions?.CreationComponent && (
               <div className={cn("p-1 pt-0")}>
                 {actions.CreationComponent({
