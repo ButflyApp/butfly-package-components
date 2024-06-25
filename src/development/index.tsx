@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Label, Select } from ".";
+import { Autocomplete, Button, Label, Select } from "../index";
 import { CurrencyInput } from "@/components/CurrencyInput";
 import { Switch } from "@/components/Switch";
 import { Field, FieldProps, Formik } from "formik";
@@ -107,6 +107,7 @@ export function Development() {
                     </Select.Root>
                   )}
                 </Field>
+                
 
                 <div className="flex gap-2">
                   <Button type="submit">Submit</Button>

@@ -36,6 +36,16 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
 } from "@/components/DropdownMenu";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/Table";
 
 const SelectComponents = {
   Root: Select,
@@ -66,6 +76,17 @@ const DropdownComponents = {
   RadioGroup: DropdownMenuRadioGroup,
 };
 
+const TableComponents = {
+  Rood: Table,
+  Body: TableBody,
+  Caption: TableCaption,
+  Cell: TableCell,
+  Footer: TableFooter,
+  Head: TableHead,
+  Header: TableHeader,
+  Row: TableRow,
+};
+
 export {
   Alert,
   Autocomplete,
@@ -80,4 +101,5 @@ export {
   Switch,
   SelectComponents as Select,
   DropdownComponents as DropdownMenu,
+  TableComponents as Table,
 };
