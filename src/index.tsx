@@ -77,7 +77,7 @@ const DropdownComponents = {
 };
 
 const TableComponents = {
-  Rood: Table,
+  Root: Table,
   Body: TableBody,
   Caption: TableCaption,
   Cell: TableCell,
