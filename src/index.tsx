@@ -46,6 +46,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/Table";
+import {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+} from "@/components/Command";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+} from "@/components/Popover";
 
 const SelectComponents = {
   Root: Select,
@@ -87,6 +104,25 @@ const TableComponents = {
   Row: TableRow,
 };
 
+const CommandComponents = {
+  Root: Command,
+  Dialog: CommandDialog,
+  Input: CommandInput,
+  List: CommandList,
+  Empty: CommandEmpty,
+  Group: CommandGroup,
+  Item: CommandItem,
+  Shortcut: CommandShortcut,
+  Separator: CommandSeparator,
+};
+
+const PopoverComponents = {
+  Root: Popover,
+  Trigger: PopoverTrigger,
+  Content: PopoverContent,
+  Anchor: PopoverAnchor,
+};
+
 export {
   Alert,
   Autocomplete,
@@ -102,4 +138,6 @@ export {
   SelectComponents as Select,
   DropdownComponents as DropdownMenu,
   TableComponents as Table,
+  CommandComponents as Command,
+  PopoverComponents as Popover
 };
