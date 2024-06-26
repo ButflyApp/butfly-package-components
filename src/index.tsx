@@ -9,6 +9,7 @@ import { Label } from "@/components/Label";
 import { RadioGroup, RadioGroupItem } from "@/components/RadioGroup";
 import { Checkbox } from "@/components/Checkbox";
 import { Switch } from "@/components/Switch";
+import { Badge } from "@/components/Badge";
 import {
   Select,
   SelectContent,
@@ -135,6 +136,7 @@ export {
   RadioGroupItem,
   Checkbox,
   Switch,
+  Badge,
   SelectComponents as Select,
   DropdownComponents as DropdownMenu,
   TableComponents as Table,
