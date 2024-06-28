@@ -76,6 +76,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/Dialog";
+import { Textarea } from "@/components/Textarea"
 
 const SelectComponents = {
   Root: Select,
@@ -162,6 +163,7 @@ export {
   Checkbox,
   Switch,
   Badge,
+  Textarea,
   DialogComponents as Dialog,
   SelectComponents as Select,
   DropdownComponents as DropdownMenu,
