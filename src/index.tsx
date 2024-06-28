@@ -64,6 +64,18 @@ import {
   PopoverContent,
   PopoverAnchor,
 } from "@/components/Popover";
+import {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogTrigger,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/Dialog";
 
 const SelectComponents = {
   Root: Select,
@@ -124,6 +136,19 @@ const PopoverComponents = {
   Anchor: PopoverAnchor,
 };
 
+const DialogComponents = {
+  Root: Dialog,
+  Portal: DialogPortal,
+  Overlay: DialogOverlay,
+  Trigger: DialogTrigger,
+  Close: DialogClose,
+  Content: DialogContent,
+  Header: DialogHeader,
+  Footer: DialogFooter,
+  Title: DialogTitle,
+  Description: DialogDescription,
+};
+
 export {
   Alert,
   Autocomplete,
@@ -137,9 +162,10 @@ export {
   Checkbox,
   Switch,
   Badge,
+  DialogComponents as Dialog,
   SelectComponents as Select,
   DropdownComponents as DropdownMenu,
   TableComponents as Table,
   CommandComponents as Command,
-  PopoverComponents as Popover
+  PopoverComponents as Popover,
 };
