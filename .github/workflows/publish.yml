@@ -14,7 +14,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
       - run: |
-          rm -rf src/development.tsx \
+          rm -rf src/development \
                  src/main.tsx \
                  src/index.css
       - run: npm run build
