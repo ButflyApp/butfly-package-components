@@ -1,6 +1,6 @@
 {
   "name": "@butfly/components",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -22,7 +22,7 @@
     "dev": "vite",
     "build": "npm-run-all build:css build:package",
     "build:css": "npx tailwindcss -i ./src/package.css -o ./src/output.css",
-    "build:package": "bunchee",
+    "build:package": "bunchee -m",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

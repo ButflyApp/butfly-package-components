@@ -1,7 +1,6 @@
 import "@/output.css";
-
-const Autocomplete = React.lazy(() => import("@/components/Autocomplete"));
 import { Alert } from "@/components/Alert";
+import { Autocomplete } from "@/components/Autocomplete";
 import { Button } from "@/components/Button";
 import { CurrencyInput } from "@/components/CurrencyInput";
 import { Input } from "@/components/Input";
@@ -77,8 +76,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/Dialog";
-import { Textarea } from "@/components/Textarea";
-import React from "react";
+import { Textarea } from "@/components/Textarea"
 
 const SelectComponents = {
   Root: Select,
