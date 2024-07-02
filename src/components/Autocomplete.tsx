@@ -61,7 +61,7 @@ interface AutocompleteProps {
   };
 }
 
-export function Autocomplete({
+export default function Autocomplete({
   options = [],
   mask = "",
   onValueChange,
