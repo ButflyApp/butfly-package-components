@@ -76,7 +76,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/Dialog";
-import { Textarea } from "@/components/Textarea"
+import { Textarea } from "@/components/Textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 
 const SelectComponents = {
   Root: Select,
@@ -154,9 +155,17 @@ const AlertComponents = {
   Root: Alert,
   AlertTitle,
   AlertDescription,
-}
+};
+
+const TabsComponents = {
+  Root: Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+};
 
 export {
+  TabsComponents as Tabs,
   AlertComponents as Alert,
   Autocomplete,
   Button,
