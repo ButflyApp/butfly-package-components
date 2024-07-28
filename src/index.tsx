@@ -153,15 +153,15 @@ const DialogComponents = {
 
 const AlertComponents = {
   Root: Alert,
-  AlertTitle,
-  AlertDescription,
+  Title: AlertTitle,
+  Description: AlertDescription,
 };
 
 const TabsComponents = {
   Root: Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
+  Content: TabsContent,
+  List: TabsList,
+  Trigger: TabsTrigger,
 };
 
 export {
