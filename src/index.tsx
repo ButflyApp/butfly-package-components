@@ -1,5 +1,5 @@
 import "@/output.css";
-import { Alert } from "@/components/Alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/Alert";
 import { Autocomplete } from "@/components/Autocomplete";
 import { Button } from "@/components/Button";
 import { CurrencyInput } from "@/components/CurrencyInput";
@@ -150,8 +150,14 @@ const DialogComponents = {
   Description: DialogDescription,
 };
 
+const AlertComponents = {
+  Root: Alert,
+  AlertTitle,
+  AlertDescription,
+}
+
 export {
-  Alert,
+  AlertComponents as Alert,
   Autocomplete,
   Button,
   CurrencyInput,
